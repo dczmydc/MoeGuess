@@ -1,0 +1,9 @@
+<p>set show</p>
+
+<% questions = Question.where("Questions.round = #{params["id"]}") %>
+
+<% questions.each do |q| %>
+	<%= q.description %>
+	<%= q.round %>
+	</br>
+<% end %>

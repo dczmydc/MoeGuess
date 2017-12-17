@@ -1,0 +1,35 @@
+<h1>Discussion Board</h1>
+<table>
+    <thead>
+    	<tr>
+    		<th>Discussion id</th>
+			<th>Post By</th>
+			<th>Title</th>
+			<th>Post Time</th>
+			<th>Delete</th>
+    	</tr>
+    </thead>
+    <tbody>
+		<% @discussions.each do |d| %>
+			<% user = User.find_by(id: d.user_id) %>
+			<tr>
+				<td><%= d.id %></td>
+				<td><%= user.name %></td>
+				<td><%= link_to d.title, "discussions/#{d.id}" %></td>
+				<td><%= d.post_time %></td>
+				<% if session["user_id"].present? %>
+					<% if session["user_id"] == user.id %>
+						<td><%= link_to "Delete me", "/discussions/#{d.id}", method: "delete" %></td>
+					<% else %>
+						<td>Can not delete me</td>
+					<% end %>
+				<% else %>
+					<td>Can not delete me</td>
+				<% end %>
+				
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+
+<%= link_to "Create discussion.", "/discussions/new", method: "get" %>

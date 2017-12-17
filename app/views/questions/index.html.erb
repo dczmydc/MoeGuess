@@ -1,0 +1,41 @@
+<h1>Question list</h1>
+<table>
+    <thead>
+    	<tr>
+			<th>question_id</th>
+			<th>description</th>
+			<th>question type</th>
+			<th>sport</th>
+			<th>answer deadline</th>
+			<th>question round</th>
+			<th>Post Admin</th>
+			<th>Answer</th>
+			<th>Delete</th>
+    	</tr>
+    </thead>
+    <tbody>
+		<% @questions.each do |q| %>
+			<tr>
+				<td><%= link_to "#{q.id}", "/questions/#{q.id}", method: "get" %></td>
+				<td><%= q.description %></td>
+				<td><%= q.qtype %></td>
+				<td><%= q.sport %></td>
+				<td><%= q.end_time %></td>
+				<td><%= q.round %></td>
+				<td><%= q.admin_id %></td>
+				<td><%= q.answer %></td>
+				<% if q.admin_id == session["admin_id"] %>
+					<td><%= link_to "Delete me", "/questions/#{q.id}", method: "delete" %></td>
+				<% else %>
+					<td>Delete Me</td>
+				<% end %>
+
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+
+
+<% if session["is_ad"] == true %>
+	<%= link_to "Create question", "/questions/new", method: "get" %>
+<% end %>

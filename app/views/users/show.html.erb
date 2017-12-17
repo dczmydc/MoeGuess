@@ -1,0 +1,68 @@
+
+
+<% if @user.id == session["user_id"] %>
+	<p>Hi <%= @user.name %>, this is your room. Here you can get the latest problem set (to answer it) or details of your previous predictions.</p>
+	<%= link_to "Get the problem set for this round!", "/predictions/new", method: "get", class: 'button' %>
+<% else %>
+	<p>This is <%= @user.name %>'s room.</p>
+<% end %>
+
+
+<% my_predictions = Prediction.where("Predictions.user_id = #{@user.id}") %>
+
+<h1>Prediction history</h1>
+<table>
+    <thead>
+    	<tr>
+			<th>prediction_id</th>
+			<th>question_id</th>
+			<th>answer</th>
+			<th>score</th>
+			<th>answer time</th>
+    	</tr>
+    </thead>
+    <tbody>
+		<% my_predictions.each do |p| %>
+			<tr>
+				<td><%= p.id %></td>
+				<td><%= link_to "Question #{p.question_id}", "/questions/#{p.question_id}"%></td>
+				<td><%= p.answer %></td>
+				<td><%= p.score %></td>
+				<% if p.pred_time.present? %>
+				<td><%= p.pred_time.in_time_zone('Central Time (US & Canada)') %></td>
+				<% end %>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+
+
+<% my_discussions = Discussion.where("Discussions.user_id = #{@user.id}") %>
+
+
+<h1>Discussion history</h1>
+<table>
+    <thead>
+    	<tr>
+			<th>Discussion id</th>
+			<th>Title</th>
+			<th>post time</th>
+			
+    	</tr>
+    </thead>
+    <tbody>
+		<% my_discussions.each do |d| %>
+			<tr>
+				<td><%= link_to "#{d.id}", "/discussions/#{d.id}"%></td>
+				<td><%= d.title %></td>
+				<% if d.post_time.present? %>
+				<td><%= d.post_time.in_time_zone('Central Time (US & Canada)') %></td>
+				<% end %>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+
+
+
+

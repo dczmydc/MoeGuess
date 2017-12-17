@@ -1,0 +1,14 @@
+<h1>Hi, administer <%= @admin.name %>. Your admin id is <%= @admin.id %>.</h1>
+
+<p>Start posting the answers!</p>
+
+<h1>Round: <%= round_max = Question.maximum("round") %></h1>
+
+
+<% questions = Question.where("Questions.round = #{round_max}") %>
+<% questions.each do |q| %>
+	<%= q.description %>
+	</br>
+	<%= link_to "Give answer to this question", "/questions/#{q.id}/edit", method: "get", class: 'button'%> </br>
+<% end %>
+

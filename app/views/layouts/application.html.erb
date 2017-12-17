@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Guess Master</title>
+    <%= csrf_meta_tags %>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,700" rel="stylesheet">
+
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+  </head>
+
+  <body>
+
+    <navbar>
+      <ul>
+        <li class="brand"><%= link_to "Guess Master", "/" %></li>
+        <li><%= link_to "User list", "/users", method: "get" %></li>
+        <li><%= link_to "Admin list", "/admins", method: "get" %></li>
+        <li><%= link_to "Question list", "/questions", method: "get" %></li>
+        <li><%= link_to "Score table", "/scores", method: "get" %></li>
+        <li><%= link_to "Discussion", "/discussions", method: "get" %></li>
+        <li><%= link_to "README", "/README.html"%></li>
+
+        <% if session["user_id"].present? %>
+          <% user = User.find_by(id: session["user_id"]) %>
+          <% if user.present? %>
+            <li><%= link_to "Hi, #{user.name}.", "/users/#{user.id}" %></li>
+            </br>
+          <% end %>
+        <% end %>
+        <% if session["admin_id"].present? %>
+          <% admin = Admin.find_by(id: session["admin_id"]) %>
+          <% if admin.present? %>
+            <li><%= link_to "Hi, #{admin.name}.", "/admins/#{admin.id}" %></li>
+            </br>
+          <% end %>
+        <% end %>
+      </ul>
+    </navbar>
+    
+    
+
+    <% if notice.present? %>
+      <p class="notice"> <%= notice %> </p>
+    <% end %>
+
+
+    <%= yield %>
+
+    <navbar>
+      <ul>
+        
+        <div class="pull-right">
+          <li><%= link_to "Sign Up", "/users/new" %></li>
+          <li><%= link_to "Sign In", "/login" %></li>
+          <li><%= link_to "Sign Out", "/logout" %></li>
+        </div>
+      </ul>
+    </navbar>
+  </body>
+</html>

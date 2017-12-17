@@ -1,0 +1,7 @@
+<% if @admin.id == session["admin_id"] %>
+	<h1>Hi, administer <%= @admin.name %>. Your admin id is <%= @admin.id %>.</h1>
+	<%= link_to "Post question", "/questions/new", method: "get", class: 'button'%>
+	<%= link_to "Announce answer", "/admins/#{@admin.id}/announce", method: "get" , class: 'button'%>
+<% else %>
+	<h1>This is <%= @admin.name %>, id = <%= @admin.id %>.</h1>
+<% end %>

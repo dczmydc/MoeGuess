@@ -1,0 +1,33 @@
+<h1>User details</h1>
+<table>
+    <thead>
+    	<tr>
+    		<th>user id</th>
+			<th>user name</th>
+			<th>user detail</th>
+			<th>delete user</th>
+    	</tr>
+    </thead>
+    <tbody>
+		<% @users.each do |u| %>
+			<tr>
+				<td><%= u.id %></td>
+				<td><%= u.name %></td>
+				<td><%= link_to "Detail", "users/#{u.id}" %></td>
+				<% if session["user_id"] == u.id %>
+					<td><%= link_to "Delete me", "/users/#{u.id}", method: "delete" %></td>
+				<% else %>
+					<td>Can not delete me</td>
+				<% end %>
+
+				
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+
+<% if session["user_id"].blank? %>
+	<p>
+		<%= link_to "Can not find yourself? Sign up today!", "/users/new", method: "get", class: "button"%> 
+	</p>
+<% end %>

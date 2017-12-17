@@ -1,0 +1,14 @@
+<% question = Question.find_by(id: params["id"]) %>
+
+<%= form_tag "/questions/#{question.id}", method: 'patch' do %>
+
+    <%= question.description %>
+    <p>
+      <%= label_tag "answer" %>
+      <%= text_field_tag "answer" %>
+    </p>
+
+    <p>
+        <%= submit_tag %>
+    </p>
+<% end %>

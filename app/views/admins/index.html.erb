@@ -1,0 +1,9 @@
+<h1>Admin list</h1>
+
+<% @admins.each do |a| %>
+	
+	<%= a.name %>
+	<%= link_to "Detail", "admins/#{a.id}" %>
+	<li>id: <%= a.id %></li>
+	</br>
+<% end %>

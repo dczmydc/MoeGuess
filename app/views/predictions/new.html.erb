@@ -1,0 +1,26 @@
+<h1>Round: <%= round_max = Question.maximum("round") %></h1>
+
+<% questions = Question.where("Questions.round = #{round_max}") %>
+<%= form_tag "/predictions" do %>
+	<% questions.each do |q| %>
+		<p>Question <%= q.id %> <%= q.description %></p>
+		<% if Time.now > q.end_time %>
+			<p style="font-family:arial;color:red;font-size:20px;">The deadline for Question <%= q.id %> has passed. Please wait for the new problem set.</p>
+		<% else %>
+			<p>
+				<%= label_tag "Your answer:" %>
+				<%= text_field_tag "question#{q.id}" %>
+			</p>
+		<% end %>
+		<hr/>
+	<% end %>
+
+	<p>
+		<%= submit_tag "Make an answer.", class: 'button' %>
+
+		or
+
+		<%= link_to "Cancel", "/" %>
+	</p>
+
+<% end %>

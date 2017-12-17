@@ -1,0 +1,38 @@
+<h2>Make question</h2>
+
+<%= form_tag "/questions" do %>
+
+	<p>
+		<%= label_tag "description" %>
+		<%= text_field_tag "description", @question.description, autofocus: true %>
+	</p>
+
+	<p>
+		<%= label_tag "round" %>
+		<%= text_field_tag "round" %>
+	</p>
+
+	<p>
+		<%= label_tag "Question type" %>
+		<%= select_tag "qtype", "<option>Other</option><option>Single Choice</option><option>Multiple Choice</option><option>Number</option>".html_safe %>
+	</p>
+
+	<p>
+		<%= label_tag "sport" %>
+		<%= select_tag "sport", "<option>Other</option><option>Baseball</option><option>Basketball</option><option>Football</option><option>Hockey</option><option>Soccer</option>".html_safe %>
+	</p>
+
+	<p>
+		<%= label_tag "Answer deadline" %>
+		<%= text_field_tag "end_time" %>
+	</p>
+
+  <p>
+      <%= submit_tag "Submit this question", class: 'button' %>
+
+      or
+
+      <%= link_to "Do it later", "/questions" %>
+  </p>
+
+<% end %>

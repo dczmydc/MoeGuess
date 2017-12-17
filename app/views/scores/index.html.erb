@@ -1,0 +1,46 @@
+<h1>Score table and details</h1>
+<p>Score Table:</p>
+<table>
+    <thead>
+    	<tr>
+			<th>User Name</th>
+			<th>Total Score</th>
+			<th># of Predictions</th>
+    	</tr>
+    </thead>
+    <tbody>
+		<% @users.each do |u| %>
+			<% pts = Prediction.where("Predictions.user_id=#{u.id}").sum("score") %>
+			<tr>
+				<td><%= u.name %></td>
+				<td><%= pts.round(1) %></td>
+				<td><%= Prediction.where("Predictions.user_id=#{u.id}").count %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+<p>Details:</p>
+<table>
+    <thead>
+    	<tr>
+			<th>prediction_id</th>
+			<th>user_id</th>
+			<th>question_id</th>
+			<th>answer</th>
+			<th>prediction time</th>
+			<th>score</th>
+    	</tr>
+    </thead>
+    <tbody>
+		<% @predictions.each do |p| %>
+			<tr>
+				<td><%= p.id %></td>
+				<td><%= p.user_id %></td>
+				<td><%= p.question_id %></td>
+				<td><%= p.answer %></td>
+				<td><%= p.pred_time %></td>
+				<td><%= p.score %></td>	
+			</tr>
+		<% end %>
+	</tbody>
+</table>
