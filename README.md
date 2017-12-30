@@ -1,20 +1,48 @@
-# MPCS 52553 - Final Project Starting Point
+# MOEGUESS
 
-* Download the ZIP of this repository to start your project.  
-* Rename your folder to `mpcs52553-final`
+TODO:
+1. Change from sport to Moeguess data, add logic
+2. Add fromtend/js
 
-<hr>
+# YML FORMAT
 
-Or, you can create a new Rails app yourself and follow these steps:
+User
+  name: string
+  password_digest: string
 
-1. Generate a new Rais app: `rails new mpcs52553-final --skip-bundle`
-2. Add `gem 'ez'` inside the `Gemfile`
-3. `bundle install`
-4. Then customize the `config/development.rb` as follows:
+Admin
+  name: string
+  password_digest: string
 
-    ```
-      config.assets.debug = false
-      config.assets.digest = false
-    ```
+Question
+  description: text
+  qtype: string
+  //sport: string
+  answer: string
+  admin_id: integer
+  start_time: datetime
+  end_time: datetime
+  round: integer
 
-Now you can start developing.  Happy coding!
+Prediction
+  user_id: integer
+  question_id: integer
+  answer: string
+  pred_time: datetime
+  score: float
+  
+Score
+  round: integer
+  user_id: integer
+  point: float
+
+Discussion
+  content: string
+  title: string
+  user_id: integer
+  post_time: datetime
+
+# LOGIC
+user: answer questions, update answers
+admin: post questions, update points
+both: see points -- total / one day / somebody's
