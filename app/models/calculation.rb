@@ -44,8 +44,8 @@ class Calculation
 	# return: List of [user_id, [standard,[every question pts]]]
 	def self.calculate_scores(questions_type, answers)
 		#Examples:
-		#q_t: [{type: "Single Choice" ,answer:[A]} ,
-		#      {type: "Number Range"  ,answer:[25,[0.8,0.5,0.2]]}
+		#q_t: [{type: "Single Choice" ,answer:A} ,
+		#      {type: "Number Range"  ,answer:[25,0.8,0.5,0.2]}
 		#     ]
 		#ans: [{user_id:15, user_answer:["A","B"]} ,
 		#      {user_id:23, user_answer:["C","D"]}
@@ -86,8 +86,125 @@ class Calculation
 	def self.single_answer(question, answer)
 		puts question
 		puts answer
-		return 1.0
+		question_type = question[:type]
+		correct_answer = question[:answer]
+
+		#1. single answer
+		if question_type == "Single Choice"
+			if answer.to_s == correct_answer.to_s
+			 return 1.0
+			else
+			 return 0.0
+			end
+		end
+
+		#2. number
+		if question_type == "Number"
+			my_error = (correct_answer[0] - answer.to_f).abs
+			min_error = correct_answer[1]
+			max_error = correct_answer[2]
+			my_score = 1 - (my_error - min_error) / (max_error - min_error)
+			if my_score > 1.0
+				my_score = 1.0
+			end
+			if my_score < 0
+				my_score = 0.0
+			end
+			return my_score
+		end
+
+ 		#3. Multiple Choice
+		if question_type == "Multiple Choice"
+			correct_number = 0.0
+			wrong_number = 0.0
+			answered_list = []
+			answer.split('').each do |ch|
+				#If same choice appears again, skip it
+				if answered_list.include? ch
+					next#continue
+				end
+				answered_list.append(ch)
+
+				#correct/wrong ++
+				if correct_answer.include? ch
+					correct_number += 1
+				else
+					wrong_number += 1
+				end
+			end
+
+			#final points
+			valid_points = (correct_number - wrong_number) / correct_answer.length
+			if valid_points > 1.0
+				puts "Warning: valid points greater than 1 in multiple choice"
+				valid_points = 1.0
+			end
+			if valid_points < 0
+				return 0.0
+			end
+			return valid_points
+		end
+
+ 		#4. Compound Choice
+
+ 		#5. JiaYiBing
+
+ 		#6. Shopping
+
+ 		#7. JiaYiBing Shopping
+
+ 		#8. Single Choice Multiple Answer
+
+ 		#a. Custom Sorting
+
+ 		#c. Range Number
+		if question_type == "Number Range"
+			my_answer = answer.to_i
+			#distance of the player's answer to the correct answer
+			delta = (my_answer - correct_answer[0]).abs
+			# if totally correct
+			if delta == 0
+				return 1.0
+			end
+			# if the distance is in the range
+			if delta < correct_answer.length
+				return correct_answer[delta]
+			else
+				return 0.0
+			end
+		end
+
+		return 0.0
 	end
+
+	def self.test()
+
+		#init
+		correct_test = 0
+		wrong_test = 0
+
+		#1. single answer
+		q = {type:"Single Choice", answer: "C"}
+		a1 = "C"
+		a2 = "A"
+		if Calculation.single_answer(q,a1) == 1.0
+			correct_test += 1
+		else
+			wrong_test += 1
+			puts "Should be 1.0, but is ", Calculation.single_answer(q,a2)
+		end
+		if Calculation.single_answer(q,a2) == 0.0
+			correct_test += 1
+		else
+			wrong_test += 1
+			puts "Should be 0.0, but is ", Calculation.single_answer(q,a2)
+		end
+		puts "Totally " + correct_test.to_s + "/" + (correct_test+wrong_test).to_s + " test passed."
+
+
+
+	end
+
 
 
 
