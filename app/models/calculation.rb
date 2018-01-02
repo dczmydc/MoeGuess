@@ -146,14 +146,38 @@ class Calculation
 		end
 
  		#4. Compound Choice
+		if question_type == "Compound Choice"
+			if answer.include? correct_answer
+				return (1.0 / answer.length)
+			else
+				return 0.0
+			end
+		end
 
  		#5. JiaYiBing
+		if question_type == "JiaYiBing"
+			if answer == correct_answer[0]
+				return 3.0
+			elsif answer == correct_answer[1]
+				return 2.0
+			elsif answer == correct_answer[2]
+				return 1.0
+			end
+			return 0.0
+		end
 
  		#6. Shopping
 
  		#7. JiaYiBing Shopping
 
  		#8. Single Choice Multiple Answer
+		if question_type == "Single Choice Multiple Answer"
+			if correct_answer.include? answer
+				return 1.0
+			else
+				return 0.0
+			end
+		end
 
  		#a. Custom Sorting
 
