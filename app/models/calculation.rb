@@ -37,6 +37,32 @@ class Calculation
 		return 0.0
 	end
 
+	#Fill in the standard points
+	def self.calculate_standard_point(points, round_mean=50, round_std=10)
+		#points: [{uid:15, sp:nil, pts:[0.7,1.4]} ,
+		#      		{uid:23, sp:nil, pts:[0.5,0.8]}
+		#     		]
+		moment = [0.0, 0.0, 0.0]
+		points.each do |single|
+			value = single[:pts].sum
+			moment[0] += 1
+			moment[1] += value
+			moment[2] += value ** 2
+		end
+
+		mean = moment[1] / moment[0]
+		std = Math.sqrt(moment[2] / moment[0] - mean ** 2)
+
+		points.each do |single|
+			standard_point = (single[:pts].sum - mean) / std
+			single[:sp] = standard_point * round_std + round_mean
+		end
+	end
+
+
+
+
+
 	#In moeguess, use this method to calculte scores.
 	# Parameters:
 	# questions_type: List of [name, [answer & parameters]]
@@ -223,10 +249,20 @@ class Calculation
 			wrong_test += 1
 			puts "Should be 0.0, but is ", Calculation.single_answer(q,a2)
 		end
+
+		answers = []
+		answers.append({uid:12,sp:nil,pts:[0.3,0.9,1.0]})
+		answers.append({uid:15,sp:nil,pts:[0.4,0.6,0.5]})
+		answers.append({uid:18,sp:nil,pts:[0.1,0.5,0.1]})
+		answers.append({uid:23,sp:nil,pts:[0.0,0.4,0.2]})
+		answers.append({uid:24,sp:nil,pts:[0.3,0.3,0.4]})
+		answers.append({uid:27,sp:nil,pts:[0.8,0.2,0.0]})
+		answers.append({uid:33,sp:nil,pts:[0.6,0.1,0.8]})
+		Calculation.calculate_standard_point(answers)
+		answers.each do |answer|
+			puts answer
+		end
 		puts "Totally " + correct_test.to_s + "/" + (correct_test+wrong_test).to_s + " test passed."
-
-
-
 	end
 
 
